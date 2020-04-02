@@ -7343,10 +7343,12 @@ function run() {
             const trivyVersion = core
                 .getInput('trivy_version')
                 .replace(/^v/, '');
-            let images = core.getInput('images').split(',');
+            let images = core.getInput('images').
+                split(',').
+                filter(el => el.trim().length > 0);
             const issueFlag = core.getInput('issue').toLowerCase() == 'true';
             const token = core.getInput('token', { required: true });
-            core.info(`Images: ${images}`);
+            core.info(`Images: ${images}, length: ${images.length}`);
             if (images.length == 0) {
                 core.info('Fetching packages from repository');
                 // Fetch all images from Github packages
