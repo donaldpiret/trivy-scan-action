@@ -73,7 +73,7 @@ async function run() {
       }
 
       const issueOption: IssueOption = {
-        title: core.getInput('issue_title'),
+        title: `${core.getInput('issue_title')} - ${image}`,
         body: issueContent,
         labels: core
           .getInput('issue_label')
