@@ -13352,7 +13352,7 @@ function getPackages(token) {
                 accept: 'application/vnd.github.packages-preview+json'
             }
         });
-        core.info(`Response: ${result}`);
+        core.info(`Response: ${JSON.stringify(result)}`);
         let formattedPackages = result.repository.packages.nodes.map((node) => {
             return node.versions.nodes.map((version) => {
                 `docker.pkg.github.com/${github_1.context.repo.owner}/${github_1.context.repo.owner}/${version.package.name}:${version.version}`;
