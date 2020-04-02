@@ -32,7 +32,7 @@ export async function getPackages(
       }
     }
   );
-  core.info(result);
+  core.info(JSON.stringify(result));
   let formattedPackages: string[] = result.repository.packages.nodes.map((node) => {
     return node.versions.nodes.map((version) => {
       `docker.pkg.github.com/${context.repo.owner}/${context.repo.owner}/${version.package.name}:${version.version}`
