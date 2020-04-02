@@ -7346,7 +7346,9 @@ function run() {
             let images = core.getInput('images').split(',');
             const issueFlag = core.getInput('issue').toLowerCase() == 'true';
             const token = core.getInput('token', { required: true });
+            core.info(`Images: ${images}`);
             if (images.length == 0) {
+                core.info('Fetching packages from repository');
                 // Fetch all images from Github packages
                 //github.context
                 images = yield packages_1.getPackages(token);

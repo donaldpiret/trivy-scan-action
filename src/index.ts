@@ -20,7 +20,9 @@ async function run() {
     const issueFlag: boolean = core.getInput('issue').toLowerCase() == 'true';
     const token: string = core.getInput('token', { required: true });
 
+    core.info(`Images: ${images}`);
     if (images.length == 0) {
+      core.info('Fetching packages from repository');
       // Fetch all images from Github packages
       //github.context
       images = await getPackages(token);
