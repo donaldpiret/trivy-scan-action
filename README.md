@@ -1,12 +1,12 @@
-# Gitrivy
+# Trvy Scan Action
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/homoluctus/gitrivy?color=brightgreen&include_prereleases)
-![GitHub](https://img.shields.io/github/license/homoluctus/gitrivy?color=brightgreen)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/donaldpiret/trivy-scan-action?color=brightgreen&include_prereleases)
+![GitHub](https://img.shields.io/github/license/donaldpiret/trivy-scan-action?color=brightgreen)
 
-This is a GitHub Actions to scan vulnerability using [Trivy](https://github.com/aquasecurity/trivy).<br>
+This is a GitHub Actions to scan your github package docker images vulnerability using [Trivy](https://github.com/aquasecurity/trivy).<br>
 If vulnerabilities are found by Trivy, it creates the following GitHub Issue.
 
-![image](https://github.com/homoluctus/gitrivy/blob/master/issue.png)
+![image](https://github.com/donaldpiret/trivy-scan-action/blob/master/issue.png)
 
 ## Usage
 
@@ -15,7 +15,7 @@ If vulnerabilities are found by Trivy, it creates the following GitHub Issue.
 |Parameter|Required|Default Value|Description|
 |:--:|:--:|:--:|:--|
 |trivy_version|False|latest|Trivy version|
-|image|True|N/A|The target image name to scan the vulnerability<br>Specify this parameter or `IMAGE_NAME` environment variable|
+|images|False|N/A|The comma-separated names of the images to scan for vulnerabilities<br>You can specify this parameter or `IMAGE_NAMES` environment variable.<br>Leave blank to scan all available images|
 |severity|False|HIGH,CRITICAL|Severities of vulnerabilities (separated by commma)|
 |vuln_type|False|os,library|Scan target are os and / or library (separated by commma)|
 |ignore_unfixed|False|false|Ignore unfixed vulnerabilities<br>Please specify `true` or `false`|
