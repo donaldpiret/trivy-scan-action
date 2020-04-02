@@ -7365,7 +7365,7 @@ function run() {
             const trivy = new trivy_1.Trivy();
             // Do the vulnerability scanning for each images
             for (const image of images) {
-                core.info(`Scanning image ${image}.`);
+                core.info(`Scanning image ${image}`);
                 yield exec.exec(`docker pull ${image}`);
                 const result = trivy.scan(trivyCmdPath, image, trivyOption);
                 if (!issueFlag) {
@@ -13312,16 +13312,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const github_1 = __webpack_require__(469);
-const core = __importStar(__webpack_require__(470));
 const github = __webpack_require__(469);
 function getPackages(token) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -13346,18 +13338,16 @@ function getPackages(token) {
         }
       }
     `;
-        core.info(`Query: ${query}`);
         const result = yield client.graphql(query, {
             headers: {
                 accept: 'application/vnd.github.packages-preview+json'
             }
         });
-        core.info(`Response: ${JSON.stringify(result)}`);
-        let formattedPackages = result.repository.packages.nodes.map((node) => {
-            core.info(`Package: ${JSON.stringify(node)}`);
+        let formattedPackages = result.repository.packages.nodes.
+            filter(node => node.packageType == 'DOCKER').
+            map((node) => {
             return node.versions.nodes.map((version) => {
-                core.info(`docker.pkg.github.com/${github_1.context.repo.owner}/${github_1.context.repo.owner}/${version.package.name}:${version.version}`);
-                return `docker.pkg.github.com/${github_1.context.repo.owner}/${github_1.context.repo.owner}/${version.package.name}:${version.version}`;
+                return `docker.pkg.github.com/${github_1.context.repo.owner}/${github_1.context.repo.repo}/${version.package.name}:${version.version}`;
             });
         }).flat().filter(elem => elem !== undefined && elem.indexOf(':docker-base-layer') < 0);
         return formattedPackages;

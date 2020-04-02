@@ -44,7 +44,7 @@ async function run() {
     // Do the vulnerability scanning for each images
     for (const image of images) {
       core.info(
-        `Scanning image ${image}.`
+        `Scanning image ${image}`
       );
       await exec.exec(`docker pull ${image}`);
 
