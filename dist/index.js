@@ -13354,8 +13354,10 @@ function getPackages(token) {
         });
         core.info(`Response: ${JSON.stringify(result)}`);
         let formattedPackages = result.repository.packages.nodes.map((node) => {
+            core.info(`Package: ${JSON.stringify(node)}`);
             return node.versions.nodes.map((version) => {
-                `docker.pkg.github.com/${github_1.context.repo.owner}/${github_1.context.repo.owner}/${version.package.name}:${version.version}`;
+                core.info(`docker.pkg.github.com/${github_1.context.repo.owner}/${github_1.context.repo.owner}/${version.package.name}:${version.version}`);
+                return `docker.pkg.github.com/${github_1.context.repo.owner}/${github_1.context.repo.owner}/${version.package.name}:${version.version}`;
             });
         }).flat().filter(elem => elem !== undefined && elem.indexOf(':docker-base-layer') < 0);
         return formattedPackages;

@@ -35,8 +35,10 @@ export async function getPackages(
   );
   core.info(`Response: ${JSON.stringify(result)}`);
   let formattedPackages: string[] = result.repository.packages.nodes.map((node) => {
+    core.info(`Package: ${JSON.stringify(node)}`);
     return node.versions.nodes.map((version) => {
-      `docker.pkg.github.com/${context.repo.owner}/${context.repo.owner}/${version.package.name}:${version.version}`
+      core.info(`docker.pkg.github.com/${context.repo.owner}/${context.repo.owner}/${version.package.name}:${version.version}`)
+      return `docker.pkg.github.com/${context.repo.owner}/${context.repo.owner}/${version.package.name}:${version.version}`
     })
   }).flat().filter(elem => elem !== undefined && elem.indexOf(':docker-base-layer') < 0);
 
