@@ -13326,7 +13326,7 @@ const github = __webpack_require__(469);
 function getPackages(token) {
     return __awaiter(this, void 0, void 0, function* () {
         const client = new github.GitHub(token);
-        const result = yield client.graphql(`
+        const query = `
       {
         repository(owner: "${github_1.context.repo.owner}", name: "${github_1.context.repo.repo}") {
           packages(first: 100) {
@@ -13345,12 +13345,14 @@ function getPackages(token) {
           }
         }
       }
-    `, {
+    `;
+        core.info(`Query: ${query}`);
+        const result = yield client.graphql(query, {
             headers: {
                 accept: 'application/vnd.github.packages-preview+json'
             }
         });
-        core.info(result);
+        core.info(`Response: ${result}`);
         let formattedPackages = result.repository.packages.nodes.map((node) => {
             return node.versions.nodes.map((version) => {
                 `docker.pkg.github.com/${github_1.context.repo.owner}/${github_1.context.repo.owner}/${version.package.name}:${version.version}`;
