@@ -6552,7 +6552,7 @@ function run() {
             const trivyVersion = core
                 .getInput('trivy_version')
                 .replace(/^v/, '');
-            let images = (core.getInput('images') || process.env.IMAGE_NAMES).split(',');
+            let images = core.getInput('images').split(',');
             const issueFlag = core.getInput('issue').toLowerCase() == 'true';
             const token = core.getInput('token', { required: true });
             if (images.length == 0) {

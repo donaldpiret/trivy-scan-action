@@ -16,7 +16,7 @@ async function run() {
       .getInput('trivy_version')
       .replace(/^v/, '');
     let images: string[] =
-      (core.getInput('images') || process.env.IMAGE_NAMES as String).split(',');
+      core.getInput('images').split(',');
     const issueFlag: boolean = core.getInput('issue').toLowerCase() == 'true';
     const token: string = core.getInput('token', { required: true });
 
