@@ -12244,9 +12244,10 @@ function getPackages(token) {
             }
         });
         let formattedPackages = result.repository.packages.nodes.map((node) => {
-            return node.versions.nodes.map(version => `${version.package.name}:${version.version}`);
+            return node.versions.nodes.map((version) => {
+                `docker.pkg.github.com/${github_1.context.repo.owner}/${github_1.context.repo.owner}/${version.package.name}:${version.version}`;
+            });
         }).flat().filter(elem => elem.indexOf(':docker-base-layer') < 0);
-        console.log(formattedPackages);
         return formattedPackages;
     });
 }
