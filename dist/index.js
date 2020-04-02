@@ -7348,7 +7348,6 @@ function run() {
                 filter(el => el.trim().length > 0);
             const issueFlag = core.getInput('issue').toLowerCase() == 'true';
             const token = core.getInput('token', { required: true });
-            core.info(`Images: ${images}, length: ${images.length}`);
             if (images.length == 0) {
                 core.info('Fetching packages from repository');
                 // Fetch all images from Github packages
@@ -13313,8 +13312,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const github_1 = __webpack_require__(469);
+const core = __importStar(__webpack_require__(470));
 const github = __webpack_require__(469);
 function getPackages(token) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -13343,11 +13350,12 @@ function getPackages(token) {
                 accept: 'application/vnd.github.packages-preview+json'
             }
         });
+        core.info(result);
         let formattedPackages = result.repository.packages.nodes.map((node) => {
             return node.versions.nodes.map((version) => {
                 `docker.pkg.github.com/${github_1.context.repo.owner}/${github_1.context.repo.owner}/${version.package.name}:${version.version}`;
             });
-        }).flat().filter(elem => elem.indexOf(':docker-base-layer') < 0);
+        }).flat().filter(elem => elem !== undefined && elem.indexOf(':docker-base-layer') < 0);
         return formattedPackages;
     });
 }

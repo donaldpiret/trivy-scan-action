@@ -1,8 +1,5 @@
-import { Octokit } from '@octokit/rest';
-import { IssueOption, IssueResponse } from './interface';
 import { context } from '@actions/github/lib/github';
-import { version } from 'punycode';
-
+import * as core from '@actions/core';
 const github = require('@actions/github');
 
 export async function getPackages(
@@ -35,11 +32,12 @@ export async function getPackages(
       }
     }
   );
+  core.info(result);
   let formattedPackages: string[] = result.repository.packages.nodes.map((node) => {
     return node.versions.nodes.map((version) => {
       `docker.pkg.github.com/${context.repo.owner}/${context.repo.owner}/${version.package.name}:${version.version}`
     })
-  }).flat().filter(elem => elem.indexOf(':docker-base-layer') < 0);
+  }).flat().filter(elem => elem !== undefined && elem.indexOf(':docker-base-layer') < 0);
 
   return formattedPackages;
 
