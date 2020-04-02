@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import * as github from '@actions/github';
+import * as exec from '@actions/exec';
 import { Trivy, Downloader } from './trivy';
 import { createIssue } from './issue';
 import { getPackages } from './packages';
@@ -40,6 +40,11 @@ async function run() {
 
     // Do the vulnerability scanning for each images
     for (const image of images) {
+      core.info(
+        `Scanning image ${image}.`
+      );
+      await exec.exec(`docker pull ${image}`);
+
       const result: Vulnerability[] | string = trivy.scan(
         trivyCmdPath,
         image,
