@@ -7366,7 +7366,7 @@ function run() {
             // Do the vulnerability scanning for each images
             for (const image of images) {
                 core.info(`Scanning image ${image}`);
-                yield exec.exec(`docker pull --clear-cache ${image}`);
+                yield exec.exec(`docker pull ${image}`);
                 const result = trivy.scan(trivyCmdPath, image, trivyOption);
                 if (!issueFlag) {
                     core.info(`Not create a issue for ${image} because issue parameter is false.
@@ -14447,6 +14447,7 @@ class Trivy {
             option.format,
             '--quiet',
             '--no-progress',
+            '--clear-cache'
         ];
         if (option.ignoreUnfixed)
             args.push('--ignore-unfixed');

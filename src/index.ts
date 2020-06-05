@@ -46,7 +46,7 @@ async function run() {
       core.info(
         `Scanning image ${image}`
       );
-      await exec.exec(`docker pull --clear-cache ${image}`);
+      await exec.exec(`docker pull ${image}`);
 
       const result: Vulnerability[] | string = trivy.scan(
         trivyCmdPath,

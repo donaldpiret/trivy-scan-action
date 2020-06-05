@@ -140,6 +140,7 @@ export class Trivy {
       option.format,
       '--quiet',
       '--no-progress',
+      '--clear-cache'
     ];
 
     if (option.ignoreUnfixed) args.push('--ignore-unfixed');
