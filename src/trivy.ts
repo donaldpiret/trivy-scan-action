@@ -158,7 +158,8 @@ export class Trivy {
         }
       } catch (error) {
         console.log(error.message);
-        console.debug(result.stdout);
+        console.debug('Option:', option);
+        console.debug('Result:', result);
       }
     }
 

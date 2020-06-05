@@ -7366,7 +7366,7 @@ function run() {
             // Do the vulnerability scanning for each images
             for (const image of images) {
                 core.info(`Scanning image ${image}`);
-                yield exec.exec(`docker pull ${image}`);
+                yield exec.exec(`docker pull --clear-cache ${image}`);
                 const result = trivy.scan(trivyCmdPath, image, trivyOption);
                 if (!issueFlag) {
                     core.info(`Not create a issue for ${image} because issue parameter is false.
@@ -14463,7 +14463,8 @@ class Trivy {
             }
             catch (error) {
                 console.log(error.message);
-                console.debug(result.stdout);
+                console.debug('Option:', option);
+                console.debug('Result:', result);
             }
         }
         throw new Error(`Failed vulnerability scan using Trivy.
