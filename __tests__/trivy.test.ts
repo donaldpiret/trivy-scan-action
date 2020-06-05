@@ -6,6 +6,7 @@ const downloader = new Downloader();
 const trivy = new Trivy();
 
 function removeTrivyCmd(path: string) {
+  if (path === undefined) return;
   path = path.replace(/\/trivy$/, '');
   if (downloader.trivyExists(path)) {
     unlinkSync(`${path}/trivy`);
@@ -40,12 +41,12 @@ describe('getDownloadUrl', () => {
     );
   });
 
-  test('with 0.2.0 and macOS', async () => {
-    const version = '0.2.0';
+  test('with 0.9.0 and macOS', async () => {
+    const version = '0.9.0';
     const os = 'macOS';
     const result = await downloader['getDownloadUrl'](version, os);
     expect(result).toMatch(
-      /releases\/download\/v0\.2\.0\/trivy_0\.2\.0_macOS-64bit\.tar\.gz$/
+      /releases\/download\/v0\.9\.0\/trivy_0\.9\.0_macOS-64bit\.tar\.gz$/
     );
   });
 
@@ -77,7 +78,7 @@ describe('Download trivy command', () => {
 
   test('with valid download URL and save in __tests__', async () => {
     let downloadUrl = 'https://github.com/aquasecurity/trivy';
-    downloadUrl += '/releases/download/v0.2.1/trivy_0.2.1_Linux-64bit.tar.gz';
+    downloadUrl += '/releases/download/v0.9.0/trivy_0.9.0_Linux-64bit.tar.gz';
     const savePath = './__tests__';
     await expect(
       downloader['downloadTrivyCmd'](downloadUrl, savePath)

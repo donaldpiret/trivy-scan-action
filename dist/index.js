@@ -14439,20 +14439,21 @@ class Trivy {
     scan(trivyPath, image, option) {
         this.validateOption(option);
         const args = [
+            'image',
             '--severity',
             option.severity,
             '--vuln-type',
             option.vulnType,
             '--format',
             option.format,
-            '--quiet',
-            '--no-progress',
-            '--clear-cache'
+            '--no-progress'
         ];
         if (option.ignoreUnfixed)
             args.push('--ignore-unfixed');
-        if (option.format == 'json')
-            args.push('-o results.json');
+        if (option.format === 'json') {
+            args.push('--output');
+            args.push('results.json');
+        }
         args.push(image);
         const result = child_process_1.spawnSync(trivyPath, args, {
             encoding: 'utf-8',
@@ -14460,9 +14461,11 @@ class Trivy {
         if (result.stdout && result.stdout.length > 0) {
             if (option.format === 'json') {
                 const output = fs_1.default.readFileSync('results.json');
-                const vulnerabilities = JSON.parse(output.toString('utf-8'));
-                if (vulnerabilities.length > 0)
-                    return vulnerabilities;
+                if (output.length > 0) {
+                    const vulnerabilities = JSON.parse(output.toString('utf-8'));
+                    if (vulnerabilities.length > 0)
+                        return vulnerabilities;
+                }
             }
             else {
                 const vulnerabilities = result.stdout;

@@ -93,3 +93,6 @@ typings/
 .dynamodb/
 
 .vscode/
+
+# Trivy results
+results.json
