@@ -14451,21 +14451,23 @@ class Trivy {
         ];
         if (option.ignoreUnfixed)
             args.push('--ignore-unfixed');
+        if (option.format == 'json')
+            args.push('-o results.json');
         args.push(image);
         const result = child_process_1.spawnSync(trivyPath, args, {
             encoding: 'utf-8',
         });
         if (result.stdout && result.stdout.length > 0) {
-            try {
-                const vulnerabilities = option.format === 'json' ? JSON.parse(result.stdout) : result.stdout;
-                if (vulnerabilities.length > 0) {
+            if (option.format === 'json') {
+                const output = fs_1.default.readFileSync('results.json');
+                const vulnerabilities = JSON.parse(output.toString('utf-8'));
+                if (vulnerabilities.length > 0)
                     return vulnerabilities;
-                }
             }
-            catch (error) {
-                console.log(error.message);
-                console.debug('Option:', option);
-                console.debug('Result:', result);
+            else {
+                const vulnerabilities = result.stdout;
+                if (vulnerabilities.length > 0)
+                    return vulnerabilities;
             }
         }
         throw new Error(`Failed vulnerability scan using Trivy.

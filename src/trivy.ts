@@ -144,6 +144,7 @@ export class Trivy {
     ];
 
     if (option.ignoreUnfixed) args.push('--ignore-unfixed');
+    if (option.format == 'json') args.push('-o results.json');
     args.push(image);
 
     const result: SpawnSyncReturns<string> = spawnSync(trivyPath, args, {
@@ -151,16 +152,13 @@ export class Trivy {
     });
 
     if (result.stdout && result.stdout.length > 0) {
-      try {
-        const vulnerabilities: Vulnerability[] | string =
-          option.format === 'json' ? JSON.parse(result.stdout) : result.stdout;
-        if (vulnerabilities.length > 0) {
-          return vulnerabilities;
-        }
-      } catch (error) {
-        console.log(error.message);
-        console.debug('Option:', option);
-        console.debug('Result:', result);
+      if (option.format === 'json') {
+        const output: Buffer = fs.readFileSync('results.json')
+        const vulnerabilities: Vulnerability[] = JSON.parse(output.toString('utf-8'))
+        if (vulnerabilities.length > 0) return vulnerabilities;
+      } else {
+        const vulnerabilities: Vulnerability[] | string = result.stdout;
+        if (vulnerabilities.length > 0) return vulnerabilities;
       }
     }
 
