@@ -14455,9 +14455,15 @@ class Trivy {
             encoding: 'utf-8',
         });
         if (result.stdout && result.stdout.length > 0) {
-            const vulnerabilities = option.format === 'json' ? JSON.parse(result.stdout) : result.stdout;
-            if (vulnerabilities.length > 0) {
-                return vulnerabilities;
+            try {
+                const vulnerabilities = option.format === 'json' ? JSON.parse(result.stdout) : result.stdout;
+                if (vulnerabilities.length > 0) {
+                    return vulnerabilities;
+                }
+            }
+            catch (error) {
+                console.log(error.message);
+                console.debug(result.stdout);
             }
         }
         throw new Error(`Failed vulnerability scan using Trivy.
